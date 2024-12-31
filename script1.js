@@ -108,33 +108,71 @@ mobileMenu.addEventListener('click', () => {
 
 
 
+//document.addEventListener("DOMContentLoaded", function () {
+    //const likeButtons = document.querySelectorAll(".like-button");
+
+  //  likeButtons.forEach(button => {
+       // const card = button.closest(".contain-card");
+     //   const cardId = card.getAttribute("data-id");
+   //     const likeCountElement = button.querySelector(".like-count");
+
+        // Load the like count from localStorage
+      //  const storedLikes = localStorage.getItem(`like_${cardId}`);
+     //   const isLiked = localStorage.getItem(`liked_${cardId}`) === "true";
+
+     //   likeCountElement.textContent = storedLikes || 0;
+    //    if (isLiked) button.disabled = true;
+
+    //    button.addEventListener("click", () => {
+        //    if (!isLiked) {
+       //         const currentLikes = parseInt(likeCountElement.textContent, 10);
+       //         const newLikes = currentLikes + 1;
+
+                // Update like count in UI and localStorage
+          //      likeCountElement.textContent = newLikes;
+          //      localStorage.setItem(`like_${cardId}`, newLikes);
+       //         localStorage.setItem(`liked_${cardId}`, "true");
+
+                // Disable the button after liking
+      //          button.disabled = true;
+   //         }
+   //     });
+ //   });
+//});
+
+
 document.addEventListener("DOMContentLoaded", function () {
     const likeButtons = document.querySelectorAll(".like-button");
+
+    // Mock server data (In a real-world app, replace this with an API call)
+    const serverData = {
+        likes: {
+            1: 10, // Card 1 has 10 likes
+            2: 15, // Card 2 has 15 likes
+        },
+    };
 
     likeButtons.forEach(button => {
         const card = button.closest(".contain-card");
         const cardId = card.getAttribute("data-id");
         const likeCountElement = button.querySelector(".like-count");
 
-        // Load the like count from localStorage
-        const storedLikes = localStorage.getItem(`like_${cardId}`);
-        const isLiked = localStorage.getItem(`liked_${cardId}`) === "true";
-
-        likeCountElement.textContent = storedLikes || 0;
-        if (isLiked) button.disabled = true;
+        // Load the like count from the server (mocked)
+        const totalLikes = serverData.likes[cardId] || 0;
+        likeCountElement.textContent = totalLikes;
 
         button.addEventListener("click", () => {
-            if (!isLiked) {
-                const currentLikes = parseInt(likeCountElement.textContent, 10);
-                const newLikes = currentLikes + 1;
+            // Update the like count
+            if (!button.disabled) {
+                serverData.likes[cardId] = (serverData.likes[cardId] || 0) + 1;
 
-                // Update like count in UI and localStorage
-                likeCountElement.textContent = newLikes;
-                localStorage.setItem(`like_${cardId}`, newLikes);
-                localStorage.setItem(`liked_${cardId}`, "true");
+                // Simulate saving to server
+                likeCountElement.textContent = serverData.likes[cardId];
 
                 // Disable the button after liking
                 button.disabled = true;
+
+                console.log(`Updated likes for card ${cardId}: ${serverData.likes[cardId]}`);
             }
         });
     });
